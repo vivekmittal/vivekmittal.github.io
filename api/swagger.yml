@@ -1,0 +1,82 @@
+swagger: "2.0"
+info:
+  title: "Konnect API"
+  version: "0.0.1"
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /konnect/v1/users/signup:
+    post:
+      tags:
+        - Sign Up
+      summary: Create user account and generate OTP
+      parameters:
+        - name: Content-Type
+          in: header
+          description: Content Type
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: Cart response success
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: Bad request error
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Error:
+    type: object
+    required:
+      - error
+    properties:
+      error:
+        type: string
+  User:
+    title: User
+    type: object
+    required:
+      - mobile
+      - location
+      - language
+    properties:
+      mobile:
+        type: string
+      language:
+        type: string
+      location:
+        $ref: "#/definitions/Location"
+      first_name:
+        type: string
+      last_name:
+        type: string
+      profession_id:
+        type: integer
+      company_id:
+        type: integer
+  Location:
+    title: Location
+    type: object
+    required:
+      - lat
+      - lon
+      - name
+    properties:
+      lat:
+        type: string
+      lon:
+        type: string
+      name:
+        type: string
