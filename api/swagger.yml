@@ -11,7 +11,7 @@ paths:
     post:
       tags:
         - Sign Up
-      summary: Create user account and generate OTP
+      summary: Create user account and request OTP
       parameters:
         - name: Content-Type
           in: header
@@ -25,9 +25,7 @@ paths:
             $ref: "#/definitions/User"
       responses:
         200:
-          description: Cart response success
-          schema:
-            $ref: "#/definitions/User"
+          description: Success
         400:
           description: Bad request error
           schema:
@@ -36,6 +34,92 @@ paths:
           description: Internal server error
           schema:
             $ref: "#/definitions/Error"
+  /konnect/v1/users/login:
+    post:
+      tags:
+        - Login
+      summary: Login (Enter OTP)
+      parameters:
+        - name: Content-Type
+          in: header
+          description: Content Type
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: Success with Access Token
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: Bad request error
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/Error"
+  /konnect/v1/users/otp:
+    post:
+      tags:
+        - Login
+      summary: Request an OTP (Login)
+      parameters:
+        - name: Content-Type
+          in: header
+          description: Content Type
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/GenerateOTPRequest"
+      responses:
+        200:
+          description: Success
+        400:
+          description: Bad request error
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/Error"
+  /konnect/v1/users/token:
+    get:
+      tags:
+        - Login
+      summary: Refresh Access Token (to be polled every 5 mins)
+      parameters:
+        - name: Content-Type
+          in: header
+          description: Content Type
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Access Token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success with Access Token
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: Bad request error
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/Error"
+
 definitions:
   Error:
     type: object
@@ -79,4 +163,28 @@ definitions:
       lon:
         type: string
       name:
+        type: string
+  LoginRequest:
+    type: object
+    required:
+      - mobile
+      - otp
+    properties:
+      mobile:
+        type: string
+      otp:
+        type: string
+  LoginResponse:
+    type: object
+    properties:
+      access_token:
+        type: string
+      error:
+        type: string
+  GenerateOTPRequest:
+    type: object
+    required:
+      - mobile
+    properties:
+      mobile:
         type: string
