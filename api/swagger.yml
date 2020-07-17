@@ -3,7 +3,7 @@ info:
   title: "Konnect API"
   version: "0.0.1"
 schemes:
-  - http
+  - https
 produces:
   - application/json
 paths:
