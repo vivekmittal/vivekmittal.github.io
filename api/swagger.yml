@@ -2,6 +2,7 @@ swagger: "2.0"
 info:
   title: "Konnect API"
   version: "0.0.1"
+host: konnection.herokuapp.com
 schemes:
   - https
 produces:
